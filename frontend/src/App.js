@@ -1,95 +1,64 @@
 import { useEffect, useRef, useState } from "react";
-import { ArrowDownRight, ArrowUpRight, Menu, X } from "lucide-react";
 import gsap from "gsap";
-import { ScrollTrigger } from "gsap/ScrollTrigger";
+import { ArrowUpRight, ArrowDown, X } from "lucide-react";
 import Lenis from "@studio-freight/lenis";
 import "@/App.css";
 
-const PORTRAIT = "https://customer-assets-lqy194kg.emergentagent.net/job_dynamic-layers-1/artifacts/8gm9fkxb_ChatGPT%20Image%20Aug%209%2C%202026%2C%2002_21_41%20AM.png";
-
 const projects = [
-  { number: "01", title: "Maison No. 04", type: "Brand direction / 2024", tone: "warm" },
-  { number: "02", title: "Objects in quiet", type: "Editorial / 2023", tone: "cool" },
-  { number: "03", title: "After the light", type: "Campaign / 2022", tone: "rose" },
+  { category: "AI Product", title: "Lucid — AI Research Copilot", year: "2025", description: "An AI-powered research experience designed to turn complex information into clear insights.", tags: ["AI", "Product Design", "UX", "Design Systems"] },
+  { category: "SaaS Product", title: "Flowstate", year: "2024", description: "A modern SaaS experience designed around simplicity, productivity, and intelligent workflows.", tags: ["Product Design", "UX/UI", "Web", "Frontend"] },
+  { category: "Mobile Product", title: "Wayfarer", year: "2024", description: "A mobile experience focused on intuitive interaction and meaningful user journeys.", tags: ["Mobile", "UX", "UI", "Interaction"] },
+  { category: "Experimental AI", title: "Loom", year: "2023", description: "An exploration into AI-native interfaces, generative UI, and new interaction models.", tags: ["AI", "Experiment", "Generative UI", "Prototype"] },
 ];
 
-function ParallaxHero() {
-  const ref = useRef(null);
+const experiments = ["AI interfaces", "Micro-interactions", "Frontend experiments", "Design systems", "Generative UI", "Creative coding"];
 
-  useEffect(() => {
-    gsap.registerPlugin(ScrollTrigger);
-    const root = ref.current;
-    const layers = root?.querySelectorAll("[data-parallax-layer]");
-    const lenis = new Lenis({
-      smoothWheel: true,
-      lerp: 0.075,
-      wheelMultiplier: 0.82,
-      syncTouch: true,
-    });
-    const onScroll = () => ScrollTrigger.update();
-    lenis.on("scroll", onScroll);
-    const raf = (time) => lenis.raf(time * 1000);
-    gsap.ticker.add(raf);
-    gsap.ticker.lagSmoothing(0);
-    if (layers?.length) {
-      gsap.timeline({ scrollTrigger: { trigger: root, start: "top top", end: "bottom top", scrub: 0.7 } })
-        .to(layers[0], { yPercent: 38, scale: 1.16, ease: "none" }, 0)
-        .to(layers[1], { yPercent: 23, scale: 1.1, ease: "none" }, 0)
-        .to(layers[2], { yPercent: 10, scale: 1.045, ease: "none" }, 0);
-      gsap.fromTo(root.querySelector(".hero-copy"), { y: 0 }, { y: 180, ease: "none", scrollTrigger: { trigger: root, start: "top top", end: "bottom top", scrub: 0.7 } });
-      gsap.fromTo(root.querySelector(".hero-bottom"), { y: 0, opacity: 1 }, { y: 100, opacity: 0, ease: "none", scrollTrigger: { trigger: root, start: "top top", end: "55% top", scrub: 0.7 } });
-    }
-    gsap.utils.toArray(".section-shell").forEach((section) => {
-      gsap.fromTo(section, { y: 45, opacity: 0.35 }, { y: 0, opacity: 1, ease: "power2.out", scrollTrigger: { trigger: section, start: "top 88%", end: "top 58%", scrub: 0.7 } });
-    });
-    return () => { ScrollTrigger.getAll().forEach((trigger) => trigger.kill()); gsap.ticker.remove(raf); lenis.destroy(); };
-  }, []);
-
-  return (
-    <section className="hero" ref={ref} data-testid="hero-section">
-      <div className="hero-image hero-image-back" data-parallax-layer="1" style={{ backgroundImage: `url(${PORTRAIT})` }} />
-      <div className="hero-image hero-image-mid" data-parallax-layer="2" style={{ backgroundImage: `url(${PORTRAIT})` }} />
-      <div className="hero-image hero-image-front" data-parallax-layer="3" style={{ backgroundImage: `url(${PORTRAIT})` }} />
-      <div className="hero-grain" />
-      <div className="hero-copy" data-testid="hero-content">
-        <p className="eyebrow">Independent creative studio <span>—</span> est. 2018</p>
-        <h1>Aditi <em>Singh</em></h1>
-        <p className="hero-role">AI Product Designer</p>
-      </div>
-      <div className="hero-bottom">
-        <a href="#work" className="circle-link" data-testid="explore-work-button" aria-label="Explore selected work"><ArrowDownRight size={22} /></a>
-        <p>Scroll to enter <span>↘</span></p>
-        <p className="hero-index">01 <i /> 04</p>
-      </div>
-    </section>
-  );
+function AbstractVisual({ index, small = false }) {
+  const variants = [
+    <><circle cx="100" cy="150" r="90" fill="none" stroke="var(--cobalt)" strokeWidth="2" /><circle cx="100" cy="150" r="55" fill="none" stroke="var(--cobalt)" opacity=".5" /><rect x="230" y="70" width="140" height="18" fill="var(--charcoal)" opacity=".85" /><rect x="230" y="102" width="90" height="10" fill="var(--charcoal)" opacity=".35" /><rect x="230" y="200" width="60" height="60" fill="var(--cobalt)" /></>,
+    <><rect x="40" y="60" width="150" height="90" rx="6" fill="none" stroke="var(--charcoal)" strokeWidth="2" /><rect x="70" y="90" width="90" height="8" fill="var(--cobalt)" /><rect x="210" y="110" width="150" height="110" rx="6" fill="var(--charcoal)" /><circle cx="330" cy="140" r="8" fill="var(--cobalt)" /></>,
+    <><rect x="140" y="30" width="120" height="240" rx="18" fill="none" stroke="var(--cobalt)" strokeWidth="2" /><line x1="156" y1="76" x2="244" y2="76" stroke="var(--charcoal)" strokeWidth="6" /><circle cx="200" cy="150" r="26" fill="var(--cobalt)" /></>,
+    <><path d="M0 60H400M0 120H400M0 180H400M0 240H400" stroke="var(--cobalt)" opacity=".45" /><circle cx="130" cy="150" r="70" fill="var(--charcoal)" opacity=".9" /><circle cx="260" cy="100" r="34" fill="none" stroke="var(--charcoal)" strokeWidth="2" /><circle cx="290" cy="210" r="18" fill="var(--cobalt)" /></>,
+  ];
+  return <svg className="abstract-svg" viewBox={small ? "0 0 200 200" : "0 0 400 300"} preserveAspectRatio="xMidYMid slice" data-testid={small ? `experiment-visual-${index}` : `project-visual-${index}`}><rect width="400" height="300" fill="var(--ivory-deep)" />{variants[index % variants.length]}</svg>;
 }
 
 function App() {
   const [menuOpen, setMenuOpen] = useState(false);
-  return (
-    <main>
-      <nav className="site-nav" data-testid="site-navigation">
-        <a className="brand" href="#top" data-testid="brand-link">AN<span>.</span></a>
-        <div className={`nav-links ${menuOpen ? "is-open" : ""}`}>
-          <a href="#work" data-testid="nav-work-link">Selected work</a>
-          <a href="#about" data-testid="nav-about-link">About</a>
-          <a href="#contact" data-testid="nav-contact-link">Contact <ArrowUpRight size={14} /></a>
-        </div>
-        <button className="menu-toggle" onClick={() => setMenuOpen(!menuOpen)} data-testid="mobile-menu-button" aria-label="Toggle navigation">{menuOpen ? <X /> : <Menu />}</button>
-      </nav>
-      <div id="top"><ParallaxHero /></div>
-      <section className="intro section-shell" id="about" data-testid="about-section">
-        <p className="section-label">[ 00 — Manifesto ]</p>
-        <div className="intro-text"><h2>Making room for<br /><i>the unexpected.</i></h2><p>I work across image, identity, and atmosphere to help thoughtful brands find their clearest point of view. The work is quiet when it needs to be, and never without feeling.</p></div>
-      </section>
-      <section className="work section-shell" id="work" data-testid="selected-work-section">
-        <div className="work-heading"><p className="section-label">[ 01 — Selected work ]</p><p className="work-count">( 03 projects )</p></div>
-        <div className="project-list">{projects.map((project) => <article className={`project ${project.tone}`} key={project.number} data-testid={`project-card-${project.number}`}><div className="project-art"><span>{project.number}</span><div className="art-shape" /></div><div className="project-meta"><div><h3>{project.title}</h3><p>{project.type}</p></div><a href="#contact" data-testid={`project-link-${project.number}`} aria-label={`View ${project.title}`}><ArrowUpRight size={20} /></a></div></article>)}</div>
-      </section>
-      <section className="contact section-shell" id="contact" data-testid="contact-section"><p className="section-label">[ 02 — Start a conversation ]</p><div className="contact-row"><h2>Have a good<br /><i>feeling?</i></h2><a href="mailto:aditiisingh0409@gmail.com" className="contact-link" data-testid="contact-email-link">aditiisingh0409@gmail.com <ArrowUpRight size={23} /></a></div><div className="footer-row"><span>© Aditi Singh — 2024</span><span>Available for select projects</span><span>Instagram / Are.na</span></div></section>
+  const [activeProject, setActiveProject] = useState(null);
+  const [cursorBig, setCursorBig] = useState(false);
+  const heroRef = useRef(null);
+
+  useEffect(() => {
+    const lenis = new Lenis({ lerp: 0.08, wheelMultiplier: 0.85, smoothWheel: true, syncTouch: true });
+    const raf = (time) => lenis.raf(time * 1000);
+    gsap.ticker.add(raf); gsap.ticker.lagSmoothing(0);
+    const observer = new IntersectionObserver((entries) => entries.forEach((entry) => entry.isIntersecting && entry.target.classList.add("in")), { threshold: 0.14 });
+    document.querySelectorAll(".reveal").forEach((el) => observer.observe(el));
+    const onMove = (event) => { document.documentElement.style.setProperty("--mx", `${event.clientX}px`); document.documentElement.style.setProperty("--my", `${event.clientY}px`); };
+    window.addEventListener("mousemove", onMove);
+    const timeout = setTimeout(() => heroRef.current?.classList.add("loaded"), 100);
+    return () => { clearTimeout(timeout); observer.disconnect(); window.removeEventListener("mousemove", onMove); gsap.ticker.remove(raf); lenis.destroy(); };
+  }, []);
+
+  const navTo = (id) => { setMenuOpen(false); document.querySelector(id)?.scrollIntoView({ behavior: "smooth" }); };
+
+  return <div className="portfolio-shell">
+    <div className={`cursor-dot ${cursorBig ? "hide" : ""}`} /><div className={`cursor-ring ${cursorBig ? "big" : ""}`} />
+    <header className="top-header"><div className="wrap"><nav><button className="logo" onClick={() => navTo("#top")} data-testid="logo-button">ADITI</button><div className={`nav-links ${menuOpen ? "open" : ""}`}><button onClick={() => navTo("#work")} data-testid="nav-work-button">Work</button><button onClick={() => navTo("#about")} data-testid="nav-about-button">About</button><button onClick={() => navTo("#experiments")} data-testid="nav-experiments-button">Experiments</button><button onClick={() => navTo("#contact")} data-testid="nav-contact-button">Contact</button></div><div className="availability"><span className="dot-live" />Available for opportunities</div><button className={`nav-toggle ${menuOpen ? "open" : ""}`} onClick={() => setMenuOpen(!menuOpen)} data-testid="mobile-menu-button" aria-label="Toggle menu"><span /><span /><span /></button></nav></div></header>
+    <main id="top">
+      <section className="new-hero" id="hero" ref={heroRef} data-testid="hero-section"><div className="hero-grid-bg" /><div className="wrap"><div className="eyebrow hero-eyebrow">AI PRODUCT DESIGNER &amp; DESIGN ENGINEER</div><h1><span className="hero-line"><span>I design intelligent products</span></span><span className="hero-line"><span>and build them into <i>reality.</i></span></span></h1><p className="hero-sub">AI Product Designer creating thoughtful digital experiences at the intersection of AI, UX, and code.</p><div className="hero-ctas"><button className="btn btn-primary" onClick={() => navTo("#work")} data-testid="view-work-button">View my work <ArrowUpRight size={14} /></button><button className="btn btn-ghost" onClick={() => navTo("#contact")} data-testid="lets-talk-button">Let’s talk <ArrowUpRight size={14} /></button></div><div className="hero-meta"><div><small>Focus</small><span>AI · Product · Interaction</span></div><div><small>Practice</small><span>Design → Prototype → Build</span></div><div><small>Based in</small><span>Remote / Worldwide</span></div></div></div><div className="scroll-cue"><span className="scroll-line" /><span>Scroll</span></div></section>
+      <section id="intro"><div className="wrap"><div className="eyebrow reveal">01 — Introduction</div><p className="intro-statement reveal reveal-1">Designing at the intersection of <em>intelligence</em>, experience, and technology.</p><div className="intro-row"><div className="intro-disciplines reveal reveal-2">{["Product Design", "AI", "UX / UI", "Interaction Design", "Frontend Development"].map((item, i) => <div key={item}><span>{item}</span><small>0{i + 1}</small></div>)}</div><p className="intro-note reveal reveal-3">I work across the full arc of a product — from the first sketch of an idea to the interface people actually touch, and the code that ships it.</p></div></div></section>
+      <section id="work"><div className="wrap"><div className="section-head"><div><div className="eyebrow reveal">02 — Selected Work</div><h2 className="reveal reveal-1">Things I’ve designed<br />and shipped.</h2></div><p className="section-note reveal reveal-2">Four projects spanning AI products, SaaS, mobile, and interface experiments. Click any row to open the case study.</p></div><div className="project-list">{projects.map((project, i) => <article className={`project-row reveal reveal-${Math.min(i + 1, 4)} ${activeProject === i ? "active" : ""}`} key={project.title} onClick={() => setActiveProject(activeProject === i ? null : i)} data-testid={`project-row-${i}`} onMouseEnter={() => setCursorBig(true)} onMouseLeave={() => setCursorBig(false)}><div className="project-inner"><span className="project-num">0{i + 1}</span><div className="project-titles"><span className="project-cat">{project.category}</span><h3>{project.title}</h3><p className="project-desc">{project.description}</p><div className="project-tags">{project.tags.map((tag) => <span className="tag" key={tag}>{tag}</span>)}</div><span className="project-year">{project.year}</span></div><div className="project-visual"><AbstractVisual index={i} /></div><span className="project-arrow"><ArrowUpRight size={18} /></span></div></article>)}</div></div></section>
+      <section className="dark-process"><div className="wrap"><div className="dc-section reveal"><div className="eyebrow">03 — Process</div><h2>Design is only <i>half</i> the job.</h2><p>I don’t stop at the interface. I prototype, build, test, and iterate until the idea becomes a working product.</p><div className="dc-flow"><span>Design</span><b>↓</b><span>Prototype</span><b>↓</b><span>Frontend</span><b>↓</b><span>Product</span></div><div className="dc-panels"><div className="code-block"><em>// component: insight-card.tsx</em><br /><b>export function</b> InsightCard(data) &#123;<br />&nbsp; const confidence = useConfidence(data);<br />&nbsp; return &lt;Card tone=&#123;confidence&#125; /&gt;;<br />&#125;</div><div className="ui-preview"><div className="preview-bar"><i /><i /><i /></div>{["Summary confidence", "Source trail", "Interaction latency", "Build status"].map((item, i) => <div className="mock-row" key={item}><span>{item}</span><b>{["92%", "4 refs", "120ms", "shipped"][i]}</b></div>)}</div></div></div></div></section>
+      <section id="experiments"><div className="wrap"><div className="eyebrow reveal">04 — Exploration</div><h2 className="reveal reveal-1">Exploring what<br />comes next.</h2><p className="section-note reveal reveal-2">AI-native interfaces, agents, and generative UI — human-centered explorations into where product design is headed.</p><div className="experiment-grid">{experiments.map((item, i) => <div className="experiment-card reveal" key={item} data-testid={`experiment-card-${i}`}><AbstractVisual index={i} small /><span>{item}</span><small>{i % 2 ? "Motion" : "Concept"}</small></div>)}</div></div></section>
+      <section id="about"><div className="wrap"><div className="eyebrow reveal">05 — About</div><h2 className="reveal reveal-1">Beyond the interface.</h2><div className="about-grid"><div className="about-copy reveal reveal-2"><p>Hey, I’m <em>Aditi Singh</em> — an AI Product Designer who enjoys turning complex problems into simple, useful experiences.</p><p>I work across product design, UX/UI, AI experiences, interaction design, and frontend development.</p><p>I like being involved from the first idea to the final interface — understanding the problem, exploring solutions, designing the experience, and building the product.</p></div><div className="about-side reveal reveal-3">{[["Role", "AI Product Designer"], ["Practice", "Design → Prototype → Build → Ship"], ["Tools", "Figma, React, Framer"], ["Currently", "Open to new opportunities"]].map(([label, value]) => <div className="about-fact" key={label}><small>{label}</small><span>{value}</span></div>)}</div></div></div></section>
+      <section id="skills"><div className="wrap"><div className="eyebrow reveal">06 — Skills</div><h2 className="reveal reveal-1">What I bring to a team.</h2><div className="skills-grid reveal reveal-2">{["Product Design", "UX/UI", "AI Product Design", "Interaction Design", "Design Systems", "Prototyping", "Frontend Development", "React", "Figma"].map((skill) => <span key={skill}>{skill}</span>)}</div></div></section>
+      <section id="contact"><div className="wrap contact-wrap"><div className="eyebrow reveal">07 — Contact</div><h2 className="contact-heading reveal reveal-1">Have an idea<br />worth <em>building?</em></h2><p className="contact-sub reveal reveal-2">Let’s turn it into something people actually want to use.</p><a className="btn btn-primary reveal reveal-3" href="mailto:aditiisingh0409@gmail.com" data-testid="contact-email-button">Let’s work together <ArrowUpRight size={14} /></a><div className="contact-links reveal reveal-4"><div><small>Email</small><a href="mailto:aditiisingh0409@gmail.com" data-testid="contact-email-link">aditiisingh0409@gmail.com</a></div><div><small>LinkedIn</small><a href="#contact">in/aditi-singh</a></div><div><small>Portfolio</small><a href="#work">Selected work</a></div></div></div></section>
     </main>
-  );
+    <footer><div className="wrap footer-row"><span className="footer-logo">ADITI</span><span>AI Product Designer · © 2026</span><span>Designed &amp; built by hand.</span></div></footer>
+    {activeProject !== null && <div className="case-overlay" onClick={() => setActiveProject(null)} data-testid="case-study-overlay"><div className="case-panel" onClick={(e) => e.stopPropagation()}><div className="case-head"><span className="eyebrow">Case Study — 0{activeProject + 1}</span><button onClick={() => setActiveProject(null)} data-testid="case-study-close"><X size={18} /></button></div><div className="case-body"><span className="eyebrow">{projects[activeProject].category}</span><h2>{projects[activeProject].title}</h2><p>{projects[activeProject].description}</p><div className="case-visual"><AbstractVisual index={activeProject} /></div>{["Overview", "Problem", "Research", "Strategy", "Final UI", "Outcome"].map((stage, i) => <div className="case-stage" key={stage}><b>0{i + 1}</b><div><strong>{stage}</strong><p>A considered step in the design process, shaped by research, prototyping, and close collaboration.</p></div></div>)}</div></div></div>}
+  </div>;
 }
 
 export default App;
