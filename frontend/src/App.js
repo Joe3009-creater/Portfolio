@@ -20,17 +20,28 @@ function ParallaxHero() {
     gsap.registerPlugin(ScrollTrigger);
     const root = ref.current;
     const layers = root?.querySelectorAll("[data-parallax-layer]");
-    const lenis = new Lenis({ smoothWheel: true });
+    const lenis = new Lenis({
+      smoothWheel: true,
+      lerp: 0.075,
+      wheelMultiplier: 0.82,
+      syncTouch: true,
+    });
     const onScroll = () => ScrollTrigger.update();
     lenis.on("scroll", onScroll);
     const raf = (time) => lenis.raf(time * 1000);
     gsap.ticker.add(raf);
+    gsap.ticker.lagSmoothing(0);
     if (layers?.length) {
-      gsap.timeline({ scrollTrigger: { trigger: root, start: "top top", end: "bottom top", scrub: true } })
-        .to(layers[0], { yPercent: 18, ease: "none" }, 0)
-        .to(layers[1], { yPercent: 11, ease: "none" }, 0)
-        .to(layers[2], { yPercent: 5, ease: "none" }, 0);
+      gsap.timeline({ scrollTrigger: { trigger: root, start: "top top", end: "bottom top", scrub: 0.7 } })
+        .to(layers[0], { yPercent: 38, scale: 1.16, ease: "none" }, 0)
+        .to(layers[1], { yPercent: 23, scale: 1.1, ease: "none" }, 0)
+        .to(layers[2], { yPercent: 10, scale: 1.045, ease: "none" }, 0);
+      gsap.fromTo(root.querySelector(".hero-copy"), { y: 0 }, { y: 180, ease: "none", scrollTrigger: { trigger: root, start: "top top", end: "bottom top", scrub: 0.7 } });
+      gsap.fromTo(root.querySelector(".hero-bottom"), { y: 0, opacity: 1 }, { y: 100, opacity: 0, ease: "none", scrollTrigger: { trigger: root, start: "top top", end: "55% top", scrub: 0.7 } });
     }
+    gsap.utils.toArray(".section-shell").forEach((section) => {
+      gsap.fromTo(section, { y: 45, opacity: 0.35 }, { y: 0, opacity: 1, ease: "power2.out", scrollTrigger: { trigger: section, start: "top 88%", end: "top 58%", scrub: 0.7 } });
+    });
     return () => { ScrollTrigger.getAll().forEach((trigger) => trigger.kill()); gsap.ticker.remove(raf); lenis.destroy(); };
   }, []);
 
