@@ -14,6 +14,7 @@ Create a portfolio landing page inspired by the supplied GSAP/ScrollTrigger/Leni
 - Responsive navigation with mobile menu.
 - Manifesto/about section, selected work cards, contact section, and mailto CTA.
 - Scroll anchors, hover motion, responsive layout, and required data-testid coverage.
+- Lenis smooth scrolling with stronger multi-rate hero parallax, fading hero controls, and section reveal motion.
 
 ## Prioritized backlog
 - P0: None.
