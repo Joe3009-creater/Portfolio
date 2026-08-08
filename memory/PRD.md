@@ -15,6 +15,8 @@ Create a portfolio landing page inspired by the supplied GSAP/ScrollTrigger/Leni
 - Manifesto/about section, selected work cards, contact section, and mailto CTA.
 - Scroll anchors, hover motion, responsive layout, and required data-testid coverage.
 - Lenis smooth scrolling with stronger multi-rate hero parallax, fading hero controls, and section reveal motion.
+- Reframed the portfolio into the supplied ivory/cobalt editorial system with Fraunces typography, cobalt accents, grid background, framed Aditi portrait hero image, experiments, process, skills, and case-study panel.
+- Corrected project interaction: first click expands a row; second click opens its case study.
 
 ## Prioritized backlog
 - P0: None.
