@@ -5,7 +5,7 @@ import { ScrollTrigger } from "gsap/ScrollTrigger";
 import Lenis from "@studio-freight/lenis";
 import "@/App.css";
 
-const PORTRAIT = "https://customer-assets-cm19k8pv.emergentagent.net/job_b077e156-7ea4-49db-be1f-8afbc6f11f31/artifacts/tbaeak7u_ChatGPT%20Image%20Aug%209%2C%202026%2C%2001_10_29%20AM.png";
+const PORTRAIT = "https://customer-assets-lqy194kg.emergentagent.net/job_dynamic-layers-1/artifacts/8gm9fkxb_ChatGPT%20Image%20Aug%209%2C%202026%2C%2002_21_41%20AM.png";
 
 const projects = [
   { number: "01", title: "Maison No. 04", type: "Brand direction / 2024", tone: "warm" },
@@ -42,8 +42,8 @@ function ParallaxHero() {
       <div className="hero-grain" />
       <div className="hero-copy" data-testid="hero-content">
         <p className="eyebrow">Independent creative studio <span>—</span> est. 2018</p>
-        <h1>Ayla <em>Noor</em></h1>
-        <p className="hero-role">Visual storyteller / creative director</p>
+        <h1>Aditi <em>Singh</em></h1>
+        <p className="hero-role">AI Product Designer</p>
       </div>
       <div className="hero-bottom">
         <a href="#work" className="circle-link" data-testid="explore-work-button" aria-label="Explore selected work"><ArrowDownRight size={22} /></a>
@@ -76,7 +76,7 @@ function App() {
         <div className="work-heading"><p className="section-label">[ 01 — Selected work ]</p><p className="work-count">( 03 projects )</p></div>
         <div className="project-list">{projects.map((project) => <article className={`project ${project.tone}`} key={project.number} data-testid={`project-card-${project.number}`}><div className="project-art"><span>{project.number}</span><div className="art-shape" /></div><div className="project-meta"><div><h3>{project.title}</h3><p>{project.type}</p></div><a href="#contact" data-testid={`project-link-${project.number}`} aria-label={`View ${project.title}`}><ArrowUpRight size={20} /></a></div></article>)}</div>
       </section>
-      <section className="contact section-shell" id="contact" data-testid="contact-section"><p className="section-label">[ 02 — Start a conversation ]</p><div className="contact-row"><h2>Have a good<br /><i>feeling?</i></h2><a href="mailto:hello@aylanoor.studio" className="contact-link" data-testid="contact-email-link">hello@aylanoor.studio <ArrowUpRight size={23} /></a></div><div className="footer-row"><span>© Ayla Noor — 2024</span><span>Available for select projects</span><span>Instagram / Are.na</span></div></section>
+      <section className="contact section-shell" id="contact" data-testid="contact-section"><p className="section-label">[ 02 — Start a conversation ]</p><div className="contact-row"><h2>Have a good<br /><i>feeling?</i></h2><a href="mailto:aditiisingh0409@gmail.com" className="contact-link" data-testid="contact-email-link">aditiisingh0409@gmail.com <ArrowUpRight size={23} /></a></div><div className="footer-row"><span>© Aditi Singh — 2024</span><span>Available for select projects</span><span>Instagram / Are.na</span></div></section>
     </main>
   );
 }
