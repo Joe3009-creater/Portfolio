@@ -21,4 +21,4 @@ Create a portfolio landing page inspired by the supplied GSAP/ScrollTrigger/Leni
 - P2: Add individual project detail pages and social links when final destinations are available.
 
 ## Next tasks
-- Confirm final name, role, email, project titles, and social URLs.
+- Name, role, and email finalized as Aditi Singh, AI Product Designer, and aditiisingh0409@gmail.com. Confirm project titles and social URLs next.
