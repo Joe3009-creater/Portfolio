@@ -1,0 +1,78 @@
+{
+  "project": {
+    "name": "Editorial Parallax Portfolio",
+    "context": "marketing portfolio landing page",
+    "audience": "creative directors, founders, recruiters, and prospective clients",
+    "success_actions": ["scroll from hero to selected work", "open a project case study", "contact the portfolio owner"],
+    "emotional_tone": "cinematic, human, composed, quietly experimental",
+    "theme": "dark editorial with warm photographic highlights",
+    "user_content": {"name": "user-provided", "role": "user-provided", "cta_text": "user-provided", "portrait": "user-supplied portrait image; use as the visual anchor/background"}
+  },
+  "design_concepts": [
+    {"name": "Film Contact Sheet", "probability": 0.28, "direction": "Portrait-led hero, numbered project frames, film-strip metadata, restrained motion", "fusion": ["cinema title cards", "Swiss editorial grid", "darkroom contact sheets"]},
+    {"name": "Museum After Hours", "probability": 0.23, "direction": "Large negative space, quiet captions, gallery-like project reveals, warm ivory type against ink", "fusion": ["museum signage", "fashion editorial", "architectural wayfinding"]},
+    {"name": "Tactile Process Archive", "probability": 0.19, "direction": "Paper-like grain, clipped annotations, process notes and image crops around selected work", "fusion": ["artist sketchbook", "printmaking registration marks", "digital portfolio"]},
+    {"name": "Nocturne Index", "probability": 0.17, "direction": "A blackened index of work with electric vermilion active states and a slow parallax portrait", "fusion": ["record sleeves", "technical catalogues", "contemporary art identity"]},
+    {"name": "Moving Portraiture", "probability": 0.13, "direction": "Portrait becomes a visual chapter marker; project cards enter as editorial cutaways", "fusion": ["documentary photography", "kinetic typography", "magazine art direction"]}
+  ],
+  "chosen_direction": {
+    "name": "Film Contact Sheet",
+    "reason": "It makes the supplied portrait the emotional anchor while giving selected work an immediately scannable, authored structure. It breaks the standard hero-plus-cards pattern without sacrificing conversion clarity."
+  },
+  "research_descriptors": [
+    {"source": "Godly / Godly.design", "url": "https://godly.design/", "descriptor": "Curated portfolio references favor layered depth, strong typography, and restrained parallax rather than constant spectacle."},
+    {"source": "Awwwards parallax collection", "url": "https://www.awwwards.com/websites/parallax/", "descriptor": "Award-level parallax commonly uses scroll as a narrative transition and keeps the foreground content legible."},
+    {"source": "One Page Love parallax collection", "url": "https://onepagelove.com/tag/parallax-scrolling", "descriptor": "One-page portfolio patterns reinforce a clear hero-to-work-to-contact sequence with motion concentrated at chapter transitions."},
+    {"source": "Webflow parallax examples", "url": "https://webflow.com/made-in-webflow/parallax", "descriptor": "Buildable references show layered imagery, sticky sections, and progressive reveal as practical alternatives to heavy 3D."}
+  ],
+  "typography": {
+    "heading": "Cormorant Garamond, serif, font-light or font-medium",
+    "body": "IBM Plex Sans",
+    "metadata": "IBM Plex Mono",
+    "rules": ["Do not use Inter, Roboto, Open Sans, or Lato for headings", "H1 max text-6xl, use text-4xl sm:text-5xl lg:text-6xl", "headings use tracking-tight and leading-none", "labels are uppercase text-xs with tracking-[0.2em]", "body copy is text-base leading-relaxed and left aligned"]
+  },
+  "colors": {
+    "archetype": "luxury",
+    "palette": {"ink": "#111316", "inkRaised": "#1A1D20", "bone": "#F1EBDD", "warmGrey": "#B9B1A4", "vermilion": "#D84A3A", "line": "#3A3937"},
+    "usage": "Use ink as the structural background, bone for primary text, warmGrey for secondary text only where contrast remains accessible, and vermilion only for CTA, active index, focus ring, and small editorial marks.",
+    "constraints": ["Never use pure black or pure gray", "No full-screen gradients", "Avoid forbidden AI purple #7351B7", "Use image overlays between bg-black/30 and bg-black/50; preserve portrait visibility"]
+  },
+  "layouts": {
+    "header": "Sticky solid/glass editorial nav with z-50, bg-ink/90 backdrop-blur-xl backdrop-saturate-150, border-b border-line; desktop shows brand plus 4 links and CTA, mobile uses a Shadcn Sheet menu.",
+    "hero": "min-h-[100svh], relative overflow-hidden; portrait fills the visual layer with object-cover and max-h-[80vh] on mobile. Put a left-aligned text block in a 12-column grid, not centered. Add a low-opacity grain layer and a dark-to-transparent left scrim.",
+    "parallax_layers": ["portrait background yPercent 70", "midground crop/yPercent 55", "title and role yPercent 40", "foreground metadata yPercent 10"],
+    "selected_work": "Use a Tetris grid: grid-cols-1 md:grid-cols-8 lg:grid-cols-12 gap-8 lg:gap-12; dominant project spans 8 columns and two rows, one tall project spans 4 columns and two rows, supporting projects span 4 columns. Leave one deliberate empty cell for breathing room.",
+    "about": "Split editorial chapter: narrow mono overline on the left, long-form bio on the right, with a small portrait crop or process detail if available.",
+    "contact": "Dark contrast-shift footer with py-20 md:py-32, oversized but capped display invitation, direct email/link CTA, and visible social links."
+  },
+  "components": {
+    "component_name": "ParallaxComponent",
+    "component_path": "/app/frontend/src/components/ui/component.jsx",
+    "implementation": "Use JavaScript/JSX, not TSX. Keep GSAP ScrollTrigger and Lenis in a useEffect with cleanup. Register ScrollTrigger once, remove the ticker callback on cleanup, kill only the component's triggers, and respect prefers-reduced-motion.",
+    "recommended_components": ["custom semantic hero and portfolio sections", "Shadcn Button for CTAs", "Shadcn Sheet for mobile navigation", "Sonner for contact-copy or form feedback"],
+    "interaction_rules": ["Every button and link has explicit hover text and background colors", "Use transform and opacity transitions only; never transition-all", "Add press scale and visible focus ring", "Project cards reveal metadata on hover and remain fully readable without hover"]
+  },
+  "motion": {
+    "libraries": ["gsap", "gsap/ScrollTrigger", "@studio-freight/lenis"],
+    "entrance": "Stagger hero label, heading, role, and CTA by 80ms with opacity plus translateY; disable under reduced motion.",
+    "scroll": "Use scrubbed layered movement only in hero; selected work uses subtle opacity/translate reveal once per section.",
+    "hover": "Project image scale 1.03, metadata color shifts to bone/vermilion, duration 240ms ease-out.",
+    "reduced_motion": "When prefers-reduced-motion is enabled, disable Lenis and parallax transforms; keep content visible and use instant state changes."
+  },
+  "visual_enhancers": ["CSS grain/noise via an aria-hidden pseudo-element at low opacity", "thin registration marks and numbered chapter labels", "visible horizontal rules as editorial structure", "custom scrollbar tinted ink and warmGrey", "layered ambient shadows, never glossy gradients"],
+  "accessibility": {
+    "contrast": "Meet WCAG AA minimum 4.5:1 for normal text and 3:1 for large text and controls; do not place warmGrey body copy over the portrait.",
+    "semantics": "Use header, nav, main, section, article, footer, h1-h3, descriptive alt text for portrait and project images.",
+    "keyboard": "All links, buttons, Sheet controls, and project cards must be keyboard reachable with a high-contrast focus-visible ring.",
+    "testing_attributes": "Add data-testid to every interactive and key informational element: site-nav, nav-link-work, hero-cta, selected-work-section, project-card-{slug}, about-section, contact-link, mobile-menu-button, mobile-menu, and contact-confirmation.",
+    "images": "Use loading=eager only for the hero portrait; lazy-load project images; preserve object position and provide meaningful alt text."
+  },
+  "media": {
+    "image_urls": [],
+    "image_policy": "No external placeholder images. The user-supplied portrait is the only hero background and must be passed as a real asset/URL supplied by the app. Project thumbnails must be real portfolio media or omitted rather than replaced with placeholders.",
+    "hero_image": {"category": "portrait background", "placement": "hero visual layer", "treatment": "object-cover, responsive object-position, visible through bg-black/30 to bg-black/50 scrim"}
+  },
+  "3d_libraries": {"use": false, "reason": "This portfolio needs clarity and cinematic 2D depth; GSAP layered parallax gives the requested immersion with lower performance risk than R3F.", "steps_if_added_later": ["lazy-load a R3F scene", "wrap in Suspense", "use transparent canvas and adequate lighting", "disable for reduced motion and small screens"]},
+  "general_ui_ux_design_guidelines": ["Design mobile-first and never hide all desktop navigation links behind a hamburger", "Do not center the entire app container or use App text-align center", "Use generous p-8 to p-16 section spacing and p-6 minimum inside bordered surfaces", "Use solid or blurred surfaces behind any text; never complete transparent overlays", "Use only primary vermilion for primary actions", "Do not use emoji as icons", "Use lucide or Phosphor icons with aria-hidden when decorative", "Keep portfolio copy concise, specific, and story-led", "Test at 375px, 768px, and 1440px widths", "Customize scrollbars without creating a gutter"],
+  "instructions_to_main_agent": ["Implement in /app/frontend using .js/.jsx files only for new components.", "Use the supplied portrait as the hero background and do not substitute a guessed or placeholder URL.", "Make the main CTA scroll to #selected-work with smooth scrolling and a fallback for reduced motion.", "Create real selected-work cards with project title, year, discipline, and a keyboard-accessible link.", "Add visible About and Contact sections and a desktop-visible navigation bar.", "Ensure every interactive/key informational element has a stable data-testid.", "Run the app and verify there are no console errors, broken imports, or hydration issues."]
+}
