@@ -30,9 +30,18 @@ function App() {
   const [expandedProject, setExpandedProject] = useState(null);
   const [cursorBig, setCursorBig] = useState(false);
   const heroRef = useRef(null);
+  const lenisRef = useRef(null);
 
   useEffect(() => {
-    const lenis = new Lenis({ lerp: 0.08, wheelMultiplier: 0.85, smoothWheel: true, syncTouch: true });
+    const lenis = new Lenis({
+      autoRaf: false,
+      lerp: 0.09,
+      duration: 1.15,
+      wheelMultiplier: 0.78,
+      smoothWheel: true,
+      syncTouch: true,
+    });
+    lenisRef.current = lenis;
     const raf = (time) => lenis.raf(time * 1000);
     gsap.ticker.add(raf); gsap.ticker.lagSmoothing(0);
     const observer = new IntersectionObserver((entries) => entries.forEach((entry) => entry.isIntersecting && entry.target.classList.add("in")), { threshold: 0.14 });
@@ -40,10 +49,14 @@ function App() {
     const onMove = (event) => { document.documentElement.style.setProperty("--mx", `${event.clientX}px`); document.documentElement.style.setProperty("--my", `${event.clientY}px`); };
     window.addEventListener("mousemove", onMove);
     const timeout = setTimeout(() => heroRef.current?.classList.add("loaded"), 100);
-    return () => { clearTimeout(timeout); observer.disconnect(); window.removeEventListener("mousemove", onMove); gsap.ticker.remove(raf); lenis.destroy(); };
+    return () => { clearTimeout(timeout); observer.disconnect(); window.removeEventListener("mousemove", onMove); gsap.ticker.remove(raf); lenis.destroy(); lenisRef.current = null; };
   }, []);
 
-  const navTo = (id) => { setMenuOpen(false); document.querySelector(id)?.scrollIntoView({ behavior: "smooth" }); };
+  const navTo = (id) => {
+    setMenuOpen(false);
+    const target = document.querySelector(id);
+    if (target && lenisRef.current) lenisRef.current.scrollTo(target, { offset: -24, duration: 1.35, lerp: 0.08, lock: true });
+  };
 
   return <div className="portfolio-shell">
     <div className={`cursor-dot ${cursorBig ? "hide" : ""}`} /><div className={`cursor-ring ${cursorBig ? "big" : ""}`} />
