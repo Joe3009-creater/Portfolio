@@ -55,7 +55,7 @@ function App() {
   const navTo = (id) => {
     setMenuOpen(false);
     const target = document.querySelector(id);
-    if (target && lenisRef.current) lenisRef.current.scrollTo(target, { offset: -24, duration: 1.35, lerp: 0.08, lock: true });
+    if (target && lenisRef.current) lenisRef.current.scrollTo(target, { offset: -24, duration: 0.9, lerp: 0.1, lock: false, force: true });
   };
 
   return <div className="portfolio-shell">
